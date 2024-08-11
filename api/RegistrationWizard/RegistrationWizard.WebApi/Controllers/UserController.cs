@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using RegistrationWizard.Application.Commands.RegisterUser;
+using RegistrationWizard.WebApi.Abstractions;
 
 namespace RegistrationWizard.WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class UserController : ControllerBase
+[Route("api/users")]
+public class UserController : ApiController
 {
-    private readonly RegisterUserHandler _registerUserHandler;
-
-    public UserController(RegisterUserHandler registerUserHandler)
+    public UserController(ISender sender) : base(sender)
     {
-        _registerUserHandler = registerUserHandler;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+    public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        await _registerUserHandler.HandleAsync(command);
-        return Ok();
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.IsSuccess ? Ok() : BadRequest(result.Error);
     }
 }

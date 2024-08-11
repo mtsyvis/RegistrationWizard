@@ -5,9 +5,9 @@ namespace RegistrationWizard.Infrastructure.Repositories;
 
 public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
-    public async Task AddUserAsync(User user)
+    public async Task AddUserAsync(User user, CancellationToken cancellationToken)
     {
         context.Users.Add(user);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

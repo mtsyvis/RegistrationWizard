@@ -6,13 +6,13 @@ namespace RegistrationWizard.Infrastructure.Repositories;
 
 public class CountryRepository(ApplicationDbContext context) : ICountryRepository
 {
-    public async Task<List<Country>> GetCountriesAsync()
+    public async Task<List<Country>> GetCountriesAsync(CancellationToken cancellationToken)
     {
-        return await context.Countries.Include(c => c.Provinces).ToListAsync();
+        return await context.Countries.Include(c => c.Provinces).ToListAsync(cancellationToken);
     }
 
-    public async Task<List<Province>> GetProvincesByCountryIdAsync(int countryId)
+    public async Task<List<Province>> GetProvincesByCountryIdAsync(int countryId, CancellationToken cancellationToken)
     {
-        return await context.Provinces.Where(p => p.CountryId == countryId).ToListAsync();
+        return await context.Provinces.Where(p => p.CountryId == countryId).ToListAsync(cancellationToken);
     }
 }

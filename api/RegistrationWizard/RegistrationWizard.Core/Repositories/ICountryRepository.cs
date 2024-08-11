@@ -4,6 +4,6 @@ namespace RegistrationWizard.Core.Repositories;
 
 public interface ICountryRepository
 {
-    Task<List<Country>> GetCountriesAsync();
-    Task<List<Province>> GetProvincesByCountryIdAsync(int countryId);
+    Task<List<Country>> GetCountriesAsync(CancellationToken cancellationToken);
+    Task<List<Province>> GetProvincesByCountryIdAsync(int countryId, CancellationToken cancellationToken);
 }

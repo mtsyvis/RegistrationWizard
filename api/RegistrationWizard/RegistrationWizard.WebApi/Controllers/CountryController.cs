@@ -1,32 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RegistrationWizard.Application.Queries;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RegistrationWizard.Application.Queries.GetCountries;
+using RegistrationWizard.Application.Queries.GetProvincesByCountryId;
+using RegistrationWizard.WebApi.Abstractions;
 
 namespace RegistrationWizard.WebApi.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class CountryController : ControllerBase
+[Route("api/countries")]
+public class CountryController : ApiController
 {
-    private readonly GetCountriesQuery _getCountriesQuery;
-    private readonly GetProvincesQuery _getProvincesQuery;
-
-    public CountryController(GetCountriesQuery getCountriesQuery, GetProvincesQuery getProvincesQuery)
+    public CountryController(ISender sender) : base(sender)
     {
-        _getCountriesQuery = getCountriesQuery;
-        _getProvincesQuery = getProvincesQuery;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCountries()
+    public async Task<IActionResult> GetCountries(CancellationToken cancellationToken)
     {
-        var countries = await _getCountriesQuery.ExecuteAsync();
-        return Ok(countries);
+
+        var query = new GetCountriesQuery();
+        var response = await Sender.Send(query, cancellationToken);
+
+        return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
     }
 
     [HttpGet("{countryId}/provinces")]
-    public async Task<IActionResult> GetProvinces(int countryId)
+    public async Task<IActionResult> GetProvinces(int countryId, CancellationToken cancellationToken)
     {
-        var provinces = await _getProvincesQuery.ExecuteAsync(countryId);
-        return Ok(provinces);
+        var query = new GetProvincesByCountryIdQuery(countryId);
+        var response = await Sender.Send(query, cancellationToken);
+
+        return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
     }
 }
