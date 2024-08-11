@@ -2,10 +2,12 @@
 
 namespace RegistrationWizard.Application.Commands.RegisterUser;
 
-public record RegisterUserCommand(
-    string Login,
-    string Password,
-    bool AgreeToTerms,
-    int CountryId,
-    int ProvinceId) : ICommand;
+public class RegisterUserCommand : ICommand
+{
+    public string Login { get; set; }
+    public string Password { get; set; }
+    public bool AgreeToTerms { get; set; }
+    public int CountryId { get; set; }
+    public int ProvinceId { get; set; }
+}
 

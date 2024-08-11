@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationWizard.WebApi", "RegistrationWizard.WebApi\RegistrationWizard.WebApi.csproj", "{7C3575D0-832B-4171-8BEC-DA403863DC60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationWizard.WebApi", "RegistrationWizard.WebApi\RegistrationWizard.WebApi.csproj", "{7C3575D0-832B-4171-8BEC-DA403863DC60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationWizard.Core", "RegistrationWizard.Core\RegistrationWizard.Core.csproj", "{956B28A5-3C0C-40F3-88D9-92AB9D6B1CFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationWizard.Core", "RegistrationWizard.Core\RegistrationWizard.Core.csproj", "{956B28A5-3C0C-40F3-88D9-92AB9D6B1CFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationWizard.Application", "RegistrationWizard.Application\RegistrationWizard.Application.csproj", "{3D846CFF-9C20-460A-BBE2-5FC523D77BF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationWizard.Application", "RegistrationWizard.Application\RegistrationWizard.Application.csproj", "{3D846CFF-9C20-460A-BBE2-5FC523D77BF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationWizard.Infrastructure", "RegistrationWizard.Infrastructure\RegistrationWizard.Infrastructure.csproj", "{0E962DF8-E3C8-43AB-820B-E53FD5E8ADAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationWizard.Infrastructure", "RegistrationWizard.Infrastructure\RegistrationWizard.Infrastructure.csproj", "{0E962DF8-E3C8-43AB-820B-E53FD5E8ADAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationWizard.Tests", "RegistrationWizard.Tests\RegistrationWizard.Tests.csproj", "{ABC99091-013D-4EEB-99E1-46BDB8EB83A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0E962DF8-E3C8-43AB-820B-E53FD5E8ADAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E962DF8-E3C8-43AB-820B-E53FD5E8ADAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E962DF8-E3C8-43AB-820B-E53FD5E8ADAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABC99091-013D-4EEB-99E1-46BDB8EB83A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABC99091-013D-4EEB-99E1-46BDB8EB83A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABC99091-013D-4EEB-99E1-46BDB8EB83A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABC99091-013D-4EEB-99E1-46BDB8EB83A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
