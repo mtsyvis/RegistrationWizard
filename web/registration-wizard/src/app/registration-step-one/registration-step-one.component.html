@@ -1,0 +1,64 @@
+<form [formGroup]="stepOneForm" (ngSubmit)="onNext()" novalidate>
+  <div class="form-group">
+    <label for="login">Login</label>
+    <input
+      type="email"
+      id="login"
+      formControlName="login"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f['login'].errors }"
+    />
+    <div *ngIf="submitted && f['login'].errors" class="invalid-feedback">
+      <small *ngIf="f['login'].errors['required']">Login is required</small>
+      <small *ngIf="f['login'].errors['email']">Login must be a valid email</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+    />
+    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+      <small *ngIf="f['password'].errors['required']">Password is required</small>
+      <small *ngIf="f['password'].errors['pattern']">
+        Password must contain at least 1 digit and 1 letter
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password</label>
+    <input
+      type="password"
+      id="confirmPassword"
+      formControlName="confirmPassword"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+    />
+    <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+      <small *ngIf="f['confirmPassword'].errors['required']">Confirm Password is required</small>
+      <small *ngIf="f['confirmPassword'].errors['mustMatch']">Passwords must match</small>
+    </div>
+  </div>
+
+  <div class="form-group form-check">
+    <input
+      type="checkbox"
+      id="agree"
+      formControlName="agree"
+      class="form-check-input"
+      [ngClass]="{ 'is-invalid': submitted && f['agree'].errors }"
+    />
+    <label for="agree" class="form-check-label">I agree</label>
+    <div *ngIf="submitted && f['agree'].errors" class="invalid-feedback">
+      <small *ngIf="f['agree'].errors['required']">You must agree before proceeding</small>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Next</button>
+</form>

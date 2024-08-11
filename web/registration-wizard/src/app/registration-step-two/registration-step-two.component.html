@@ -1,0 +1,36 @@
+<form [formGroup]="stepTwoForm" (ngSubmit)="onSave()" novalidate>
+  <div class="form-group">
+    <label for="country">Country</label>
+    <select
+      id="country"
+      formControlName="country"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f['country'].errors }"
+      (change)="onCountryChange($event)"
+    >
+      <option value="" disabled>Select a country</option>
+      <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+    </select>
+    <div *ngIf="submitted && f['country'].errors" class="invalid-feedback">
+      <small *ngIf="f['country'].errors['required']">Country is required</small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="province">Province</label>
+    <select
+      id="province"
+      formControlName="province"
+      class="form-control"
+      [ngClass]="{ 'is-invalid': submitted && f['province'].errors }"
+    >
+      <option value="" disabled>Select a province</option>
+      <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
+    </select>
+    <div *ngIf="submitted && f['province'].errors" class="invalid-feedback">
+      <small *ngIf="f['province'].errors['required']">Province is required</small>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
