@@ -1,4 +1,5 @@
-﻿using RegistrationWizard.Application.Abstractions.Messaging;
+﻿using FluentValidation;
+using RegistrationWizard.Application.Abstractions.Messaging;
 using RegistrationWizard.Core.Entities;
 using RegistrationWizard.Core.Repositories;
 using RegistrationWizard.Core.Shared;
@@ -7,15 +8,19 @@ namespace RegistrationWizard.Application.Commands.RegisterUser;
 
 public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
 {
-    private readonly IUserRepository userRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IValidator<RegisterUserCommand> _validator;
 
-    public RegisterUserHandler(IUserRepository userRepository)
+    public RegisterUserHandler(IUserRepository userRepository, IValidator<RegisterUserCommand> validator)
     {
-        this.userRepository = userRepository;
+        _userRepository = userRepository;
+        _validator = validator;
     }
 
     public async Task<Result> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
+        _validator.ValidateAndThrow(request);
+
         var user = new User
         {
             Login = request.Login,
@@ -25,7 +30,7 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
             ProvinceId = request.ProvinceId
         };
 
-        await userRepository.AddUserAsync(user, cancellationToken);
+        await _userRepository.AddUserAsync(user, cancellationToken);
 
         return Result.Success();
     }
@@ -41,6 +46,6 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
             ProvinceId = command.ProvinceId
         };
 
-        await userRepository.AddUserAsync(user, cancellationToken);
+        await _userRepository.AddUserAsync(user, cancellationToken);
     }
 }

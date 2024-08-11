@@ -1,7 +1,9 @@
+using FluentValidation;
 using MediatR;
 using RegistrationWizard.Core.Repositories;
 using RegistrationWizard.Infrastructure;
 using RegistrationWizard.Infrastructure.Repositories;
+using RegistrationWizard.WebApi.Middleware;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+
+builder.Services.AddValidatorsFromAssembly(RegistrationWizard.Application.AssemblyReference.Assembly);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(RegistrationWizard.Application.AssemblyReference.Assembly));
 
@@ -46,5 +50,7 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+app.UseMiddleware<ValidationExceptionHandlingMiddleware>();
 
 app.Run();
