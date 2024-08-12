@@ -3,6 +3,8 @@ using RegistrationWizard.Application.Abstractions.Messaging;
 using RegistrationWizard.Core.Entities;
 using RegistrationWizard.Core.Repositories;
 using RegistrationWizard.Core.Shared;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace RegistrationWizard.Application.Commands.RegisterUser;
 
@@ -21,10 +23,12 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
     {
         _validator.ValidateAndThrow(request);
 
+        // todo: add check if user with the same email already exists
+
         var user = new User
         {
             Login = request.Login,
-            Password = request.Password,
+            Password = HashPassword(request.Password),
             AgreeToTerms = request.AgreeToTerms,
             CountryId = request.CountryId,
             ProvinceId = request.ProvinceId
@@ -35,17 +39,19 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
         return Result.Success();
     }
 
-    public async Task HandleAsync(RegisterUserCommand command, CancellationToken cancellationToken)
+    // todo: move to a separate service
+    private string HashPassword(string password)
     {
-        var user = new User
+        using (SHA256 sha256 = SHA256.Create())
         {
-            Login = command.Login,
-            Password = command.Password,
-            AgreeToTerms = command.AgreeToTerms,
-            CountryId = command.CountryId,
-            ProvinceId = command.ProvinceId
-        };
-
-        await _userRepository.AddUserAsync(user, cancellationToken);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                builder.Append(hashBytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
     }
 }
