@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RegistrationWizard.Core.Repositories;
 using RegistrationWizard.Infrastructure;
 using RegistrationWizard.Infrastructure.Repositories;
@@ -45,6 +46,13 @@ app.UseCors(options =>
 });
 
 app.UseHttpsRedirection();
+
+// Migrate the database
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.UseAuthorization();
 
