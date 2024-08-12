@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { RegistrationDataService } from '../services/registration-data.service';
 
 
 @Component({
@@ -16,7 +16,11 @@ export class RegistrationStepOneComponent implements OnInit {
   stepOneForm!: FormGroup;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private registrationDataService: RegistrationDataService
+  ) {}
 
   ngOnInit(): void {
     this.stepOneForm = this.formBuilder.group({
@@ -37,6 +41,9 @@ export class RegistrationStepOneComponent implements OnInit {
     if (this.stepOneForm.invalid) {
       return;
     }
+
+    // Store step one data in the service
+    this.registrationDataService.setStepOneData(this.stepOneForm.value);
 
     // Navigate to the next step
     this.router.navigate(['/step-two']);

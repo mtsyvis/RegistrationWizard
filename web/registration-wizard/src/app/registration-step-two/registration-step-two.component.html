@@ -25,7 +25,7 @@
       [ngClass]="{ 'is-invalid': submitted && f['province'].errors }"
     >
       <option value="" disabled>Select a province</option>
-      <option *ngFor="let province of provinces" [value]="province">{{ province }}</option>
+      <option *ngFor="let province of provinces" [value]="province.id">{{ province.name }}</option>
     </select>
     <div *ngIf="submitted && f['province'].errors" class="invalid-feedback">
       <small *ngIf="f['province'].errors['required']">Province is required</small>

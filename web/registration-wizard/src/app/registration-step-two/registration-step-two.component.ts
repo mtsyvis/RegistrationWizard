@@ -2,18 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-interface Country {
-  id: number;
-  name: string;
-  // Add other properties as needed
-}
-
-interface Province {
-  id: number;
-  name: string;
-  // Add other properties as needed
-}
+import { RegistrationDataService } from '../services/registration-data.service';
+import { Router } from '@angular/router';
+import { User } from '../models/user.model';
+import { Country } from '../models/country.model';
+import { Province } from '../models/province.model';
 
 @Component({
   selector: 'app-registration-step-two',
@@ -27,8 +20,14 @@ export class RegistrationStepTwoComponent implements OnInit {
   submitted = false;
   countries: Country[] = [];
   provinces: Province[] = [];
+  stepOneData: any;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private registrationDataService: RegistrationDataService,
+  ) {}
 
   ngOnInit(): void {
     this.stepTwoForm = this.formBuilder.group({
@@ -36,21 +35,30 @@ export class RegistrationStepTwoComponent implements OnInit {
       province: ['', Validators.required]
     });
 
+    this.stepOneData = this.registrationDataService.getStepOneData();
+
+    if (!this.stepOneData) {
+      // Redirect back to step one if no data is available
+      this.router.navigate(['/step-one']);
+    }
+
     this.loadCountries();
   }
 
   get f() { return this.stepTwoForm.controls; }
 
-  // onCountryChange(countryId: string) {
-  //   this.loadProvinces(countryId);
-  // }
-
   onCountryChange(event: Event): void {
     const target = event.target as HTMLSelectElement; // Perform the type assertion here
-    const selectedCountry = target.value;
+    const selectedCountryId = target.value as unknown as number;
 
     // Load provinces or perform other actions based on the selected country
-    console.log('Selected country:', selectedCountry);
+    console.log(selectedCountryId, 'Selected country Id:');
+
+    if (selectedCountryId) {
+      this.loadProvinces(selectedCountryId);
+    } else {
+      this.provinces = [];
+    }
   }
 
   onSave() {
@@ -60,28 +68,34 @@ export class RegistrationStepTwoComponent implements OnInit {
       return;
     }
 
-    // Save the data
-    this.http.post('/api/registration', this.stepTwoForm.value).subscribe(response => {
-      console.log('Registration saved successfully!', response);
-    });
+    const stepTwoData = this.stepTwoForm.value;
+
+    const userData: User = {
+      login: this.stepOneData.login,
+      password: this.stepOneData.password,
+      agreeToTerms: this.stepOneData.agree,
+      countryId: stepTwoData.country,
+      provinceId: stepTwoData.province
+    };
+
+    this.http.post('https://localhost:44335/api/users', userData)
+      .subscribe({
+        next: (response) => {
+          console.log('User saved successfully', response);
+          this.router.navigate(['/success']); // Replace with your actual navigation
+        },
+        error: (err) => console.error('Error saving user', err)
+      });
   }
 
   loadCountries() {
-
-    // add fake data for countries
-    this.countries = [
-      { id: 1, name: 'USA' },
-      { id: 2, name: 'Canada' },
-      { id: 3, name: 'Mexico' }
-    ];
-
-    // this.http.get<Country[]>('/api/countries').subscribe((data: Country[]) => {
-    //   this.countries = data;
-    // });
+    this.http.get<Country[]>('https://localhost:44335/api/countries').subscribe((data: Country[]) => {
+      this.countries = data;
+    });
   }
 
-  loadProvinces(countryId: string) {
-    this.http.get<Province[]>(`/api/provinces?countryId=${countryId}`).subscribe((data: Province[]) => {
+  loadProvinces(countryId: number) {
+    this.http.get<Province[]>(`https://localhost:44335/api/countries/${countryId}/provinces`).subscribe((data: Province[]) => {
       this.provinces = data;
     });
   }
