@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RegistrationDataService } from '../services/registration-data.service';
+import { RegistrationDataService } from '../../services/registration-data.service';
 
 
 @Component({

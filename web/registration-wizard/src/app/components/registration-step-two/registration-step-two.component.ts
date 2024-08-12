@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RegistrationDataService } from '../services/registration-data.service';
+import { RegistrationDataService } from '../../services/registration-data.service';
 import { Router } from '@angular/router';
-import { User } from '../models/user.model';
-import { Country } from '../models/country.model';
-import { Province } from '../models/province.model';
+import { User } from '../../models/user.model';
+import { Country } from '../../models/country.model';
+import { Province } from '../../models/province.model';
 
 @Component({
   selector: 'app-registration-step-two',

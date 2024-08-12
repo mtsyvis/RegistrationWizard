@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegistrationStepOneComponent } from './registration-step-one/registration-step-one.component';
-import { RegistrationStepTwoComponent } from './registration-step-two/registration-step-two.component';
-import { SuccessComponent } from './success/success.component';
+import { RegistrationStepOneComponent } from './components/registration-step-one/registration-step-one.component';
+import { RegistrationStepTwoComponent } from './components/registration-step-two/registration-step-two.component';
+import { SuccessComponent } from './components/success/success.component';
 
 const routes: Routes = [
   { path: 'step-one', component: RegistrationStepOneComponent },

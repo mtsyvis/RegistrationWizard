@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RegistrationDataService } from '../services/registration-data.service';
+import { RegistrationDataService } from '../../services/registration-data.service';
 
 @Component({
   selector: 'app-success',
