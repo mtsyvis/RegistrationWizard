@@ -10,7 +10,7 @@ using RegistrationWizard.Infrastructure;
 namespace RegistrationWizard.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240810122903_InitialCreate")]
+    [Migration("20240812035717_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,6 +27,7 @@ namespace RegistrationWizard.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -57,6 +58,7 @@ namespace RegistrationWizard.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -88,19 +90,15 @@ namespace RegistrationWizard.Infrastructure.Migrations
 
             modelBuilder.Entity("RegistrationWizard.Core.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Login")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("AgreeToTerms")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CountryId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -109,7 +107,11 @@ namespace RegistrationWizard.Infrastructure.Migrations
                     b.Property<int>("ProvinceId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("Login");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Users");
                 });
@@ -123,6 +125,25 @@ namespace RegistrationWizard.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("RegistrationWizard.Core.Entities.User", b =>
+                {
+                    b.HasOne("RegistrationWizard.Core.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RegistrationWizard.Core.Entities.Province", "Province")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Province");
                 });
 
             modelBuilder.Entity("RegistrationWizard.Core.Entities.Country", b =>

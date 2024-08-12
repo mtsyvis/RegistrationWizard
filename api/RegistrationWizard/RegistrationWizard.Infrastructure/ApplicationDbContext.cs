@@ -25,6 +25,52 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Configure primary keys
+        modelBuilder.Entity<User>()
+            .HasKey(u => u.Login);
+
+        modelBuilder.Entity<Country>()
+            .HasKey(u => u.Id);
+
+        modelBuilder.Entity<Province>()
+            .HasKey(u => u.Id);
+
+        // Configure User Login property
+        modelBuilder.Entity<User>()
+            .Property(u => u.Login)
+            .IsRequired()
+            .HasMaxLength(50);
+
+        // Configure Contry Name property
+        modelBuilder.Entity<Country>()
+            .Property(u => u.Name)
+            .IsRequired()
+            .HasMaxLength(50);
+
+        // Configure Province Name property
+        modelBuilder.Entity<Province>()
+            .Property(u => u.Name)
+            .IsRequired()
+            .HasMaxLength(50);
+
+        // Configure the foreign key relationship between Country and Province
+        modelBuilder.Entity<Province>()
+            .HasOne(p => p.Country)
+            .WithMany(c => c.Provinces)
+            .HasForeignKey(p => p.CountryId);
+
+        // Configure the foreign key relationships for User
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Country)
+            .WithMany()
+            .HasForeignKey(u => u.CountryId);
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Province)
+            .WithMany()
+            .HasForeignKey(u => u.ProvinceId);
+
+        // Populate the database with some data
         modelBuilder.Entity<Country>().HasData(
             new Country { Id = 1, Name = "Country 1" },
             new Country { Id = 2, Name = "Country 2" }
